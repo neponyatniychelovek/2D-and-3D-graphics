@@ -1,8 +1,0 @@
-[
-{
-  "directory": "F:/vyz/2d_3d_graphics/lab7/build",
-  "command": "C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IF:\\vyz\\2d_3d_graphics\\lab7\\freeglut\\include /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG /FoCMakeFiles\\FireSystem.dir\\main.cpp.obj /FdCMakeFiles\\FireSystem.dir\\ /FS -c F:\\vyz\\2d_3d_graphics\\lab7\\main.cpp",
-  "file": "F:/vyz/2d_3d_graphics/lab7/main.cpp",
-  "output": "F:/vyz/2d_3d_graphics/lab7/build/CMakeFiles/FireSystem.dir/main.cpp.obj"
-}
-]
