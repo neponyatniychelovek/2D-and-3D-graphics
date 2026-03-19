@@ -7,7 +7,7 @@
 #include <vector>
 #include <cmath>
 
-// Вершинный шейдер
+// Р’РµСЂС€РёРЅРЅС‹Р№ С€РµР№РґРµСЂ
 const char* vertexShaderSource = R"(
 #version 330 core
 layout(location = 0) in vec3 aPos;
@@ -29,7 +29,7 @@ void main() {
 }
 )";
 
-// Геометрический шейдер (исправлен: uniform'ы объявлены до использования)
+// Р“РµРѕРјРµС‚СЂРёС‡РµСЃРєРёР№ С€РµР№РґРµСЂ (РёСЃРїСЂР°РІР»РµРЅ: uniform'С‹ РѕР±СЉСЏРІР»РµРЅС‹ РґРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ)
 const char* geometryShaderSource = R"(
 #version 330 core
 layout(triangles) in;
@@ -44,39 +44,39 @@ out vec3 gColor;
 
 uniform mat4 view;
 uniform mat4 projection;
-uniform float furLength = 0.5;   // увеличена длина
+uniform float furLength = 0.5;   // СѓРІРµР»РёС‡РµРЅР° РґР»РёРЅР°
 uniform float time;
 
-// Псевдослучайная функция
+// РџСЃРµРІРґРѕСЃР»СѓС‡Р°Р№РЅР°СЏ С„СѓРЅРєС†РёСЏ
 float random(vec3 seed) {
     return fract(sin(dot(seed, vec3(12.9898, 78.233, 45.5432))) * 43758.5453);
 }
 
 void generateFur(vec3 basePos, vec3 normal, int vertexID) {
-    // Построение касательного пространства
+    // РџРѕСЃС‚СЂРѕРµРЅРёРµ РєР°СЃР°С‚РµР»СЊРЅРѕРіРѕ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР°
     vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
     if (length(tangent) < 0.1)
         tangent = normalize(cross(normal, vec3(1.0, 0.0, 0.0)));
     vec3 bitangent = cross(normal, tangent);
 
-    // Случайные параметры для каждого волоска
+    // РЎР»СѓС‡Р°Р№РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ РєР°Р¶РґРѕРіРѕ РІРѕР»РѕСЃРєР°
     float r1 = random(basePos + vec3(vertexID, 1.0, 0.0));
     float r2 = random(basePos + vec3(vertexID, 2.0, 0.0));
     float angle = r1 * 2.0 * 3.14159;
     float offset = (r2 - 0.5) * 0.2;
 
-    // Направление роста с небольшим отклонением от нормали
+    // РќР°РїСЂР°РІР»РµРЅРёРµ СЂРѕСЃС‚Р° СЃ РЅРµР±РѕР»СЊС€РёРј РѕС‚РєР»РѕРЅРµРЅРёРµРј РѕС‚ РЅРѕСЂРјР°Р»Рё
     vec3 dir = normalize(normal + (tangent * cos(angle) + bitangent * sin(angle)) * offset);
 
-    // Генерация сегментов волоска
+    // Р“РµРЅРµСЂР°С†РёСЏ СЃРµРіРјРµРЅС‚РѕРІ РІРѕР»РѕСЃРєР°
     for (int i = 0; i < 5; i++) {
         float t = float(i) / 4.0;
         vec3 pos = basePos + dir * furLength * t;
-        // Изгиб для естественности (с учётом времени)
+        // РР·РіРёР± РґР»СЏ РµСЃС‚РµСЃС‚РІРµРЅРЅРѕСЃС‚Рё (СЃ СѓС‡С‘С‚РѕРј РІСЂРµРјРµРЅРё)
         vec3 bend = tangent * sin(t * 3.14159 * 2.0 + r1 * 10.0 + time) * 0.05;
         pos += bend;
         gl_Position = projection * view * vec4(pos, 1.0);
-        gColor = vec3(0.9, 0.7, 0.3); // яркий золотистый
+        gColor = vec3(0.9, 0.7, 0.3); // СЏСЂРєРёР№ Р·РѕР»РѕС‚РёСЃС‚С‹Р№
         EmitVertex();
     }
     EndPrimitive();
@@ -89,7 +89,7 @@ void main() {
 }
 )";
 
-// Фрагментный шейдер
+// Р¤СЂР°РіРјРµРЅС‚РЅС‹Р№ С€РµР№РґРµСЂ
 const char* fragmentShaderSource = R"(
 #version 330 core
 out vec4 FragColor;
@@ -100,7 +100,7 @@ void main() {
 }
 )";
 
-// Создание сферы
+// РЎРѕР·РґР°РЅРёРµ СЃС„РµСЂС‹
 void createSphere(std::vector<float>& vertices, std::vector<unsigned int>& indices, int stacks, int slices) {
     vertices.clear();
     indices.clear();
@@ -193,9 +193,9 @@ int main() {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
     glEnable(GL_DEPTH_TEST);
-    glLineWidth(2.0f); // чуть толще линии
+    glLineWidth(2.0f); // С‡СѓС‚СЊ С‚РѕР»С‰Рµ Р»РёРЅРёРё
 
-    // Компиляция шейдеров
+    // РљРѕРјРїРёР»СЏС†РёСЏ С€РµР№РґРµСЂРѕРІ
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -222,7 +222,7 @@ int main() {
     glDeleteShader(geometryShader);
     glDeleteShader(fragmentShader);
 
-    // Создание сферы
+    // РЎРѕР·РґР°РЅРёРµ СЃС„РµСЂС‹
     std::vector<float> sphereVertices;
     std::vector<unsigned int> sphereIndices;
     createSphere(sphereVertices, sphereIndices, 30, 30);
@@ -268,7 +268,7 @@ int main() {
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
         glUniform1f(timeLoc, timeValue);
-        glUniform1f(furLengthLoc, 0.4f); // длина шерсти
+        glUniform1f(furLengthLoc, 0.4f); // РґР»РёРЅР° С€РµСЂСЃС‚Рё
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, (GLsizei)sphereIndices.size(), GL_UNSIGNED_INT, 0);
