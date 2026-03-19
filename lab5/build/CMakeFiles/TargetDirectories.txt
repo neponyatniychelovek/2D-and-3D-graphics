@@ -1,3 +1,0 @@
-F:/vyz/2d_3d_graphics/lab5/build/CMakeFiles/ModelViewer.dir
-F:/vyz/2d_3d_graphics/lab5/build/CMakeFiles/edit_cache.dir
-F:/vyz/2d_3d_graphics/lab5/build/CMakeFiles/rebuild_cache.dir
